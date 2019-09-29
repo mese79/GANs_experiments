@@ -15,7 +15,7 @@ The code written with pytorch framework.
 
 #### **Running the code:**
 ```
-python 1d_gaussian.py`
+python 1d_gaussian.py
 # or   
 python mnist.py
 ```  
