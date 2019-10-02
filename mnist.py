@@ -300,6 +300,9 @@ def update_disc_plot(ax: plt.Axes, d_x, d_g_z, update_interval):
 def update_data_plot(ax, fake_data, epoch, batch_idx):
     imgs = fake_data[0:30, :].view(3, 10, 28, 28).cpu().numpy()
     imgs = imgs.swapaxes(1, 2).reshape(3 * 28, 10 * 28)
+    # set range in [0, 1]
+    _min = imgs.min()
+    imgs = (imgs - _min) / (imgs.max() - _min)
     ax.clear()
     ax.imshow(imgs, cmap='Greys_r')
     ax.axis('off')
