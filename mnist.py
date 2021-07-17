@@ -1,31 +1,18 @@
-import os
 import sys
 from time import time
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
-import scipy.stats as ss
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
-from torch import Tensor
 from torchvision import datasets, transforms
-from torchvision.utils import save_image
 
 from data import sample_noise
 from models import (DiscriminatorMNIST, GeneratorMNIST)
-from losses import (
-    standard_d_loss,
-    standard_g_loss,
-    heuristic_g_loss
-)
-from utility import(
-    clear_line
-)
+from losses import (standard_d_loss, standard_g_loss, heuristic_g_loss)
+from utility import (clear_line)
 
 
 SEED = 13
@@ -136,7 +123,7 @@ def main(argv=[]):
     it = 0
     t1 = time()
     for epoch in range(1, num_epochs + 1):
-        
+
         for batch_idx, (real_data, _) in enumerate(train_loader):
             it += 1
             # Training discriminator
@@ -166,7 +153,7 @@ def main(argv=[]):
             G.zero_grad()
             g_loss.backward()
             g_optimizer.step()
-        
+
             # Show some progress!
             if batch_idx % progress_update_interval == 0 or batch_idx == 0:
                 loss_log = f'epoch #{epoch:<5} batch #{batch_idx:<5}:\n\t' + \
@@ -192,7 +179,7 @@ def main(argv=[]):
                     ax_loss, d_real_loss_list, d_fake_loss_list, g_loss_list,
                     progress_update_interval, show_separate_loss
                 )
-                
+
                 # plot d(x) and d(g(z))
                 d_x_list.append(torch.mean(real_score).item())
                 d_g_z_list.append(torch.mean(fake_score).item())
@@ -221,7 +208,7 @@ def main(argv=[]):
         info_file.write(elapsed)
         info_file.flush()
         info_file.close()
-    
+
     if save_model and save_figs:
         f = fig_shots_dir.joinpath(f'shot_{num_epochs * len(train_loader) // progress_update_interval}.png')
         fig.savefig(f, format='png')
