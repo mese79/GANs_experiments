@@ -1,27 +1,17 @@
-import os
 import sys
 from pathlib import Path
 from time import time
-from typing import List, Dict, Tuple, Any
 
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as ss
 
 import torch
-from torch.tensor import Tensor
 
 from data import (sample_noise, sample_1d_data)
 from models import (Discriminator, Generator)
-from losses import (
-    standard_d_loss,
-    standard_g_loss,
-    heuristic_g_loss
-)
-from utility import(
-    clear_line,
-    clear_patch
-)
+from losses import (standard_d_loss, standard_g_loss, heuristic_g_loss)
+from utility import (clear_line, clear_patch)
 
 
 SEED = 13
@@ -117,7 +107,7 @@ def main(argv=[]):
     #
     t1 = time()
     for epoch in range(1, num_epochs + 1):
-        
+
         # Training discriminator
         for k in range(1):
             real_data = sample_1d_data(minibatch_size, data_dim, device)
@@ -143,7 +133,7 @@ def main(argv=[]):
                 g_loss = standard_g_loss(fake_score, real_score.detach())
             elif loss_type == 'hack':
                 g_loss = heuristic_g_loss(fake_score)
-            
+
             g_optimizer.zero_grad()
             g_loss.backward()
             g_optimizer.step()
@@ -172,7 +162,7 @@ def main(argv=[]):
                 ax_loss, d_real_loss_list, d_fake_loss_list, g_loss_list,
                 progress_update_interval, show_separate_loss
             )
-            
+
             # plot d(x) and d(g(z))
             d_x_list.append(torch.mean(real_score).item())
             d_g_z_list.append(torch.mean(fake_score).item())
@@ -331,7 +321,7 @@ def plot_decision_boundary(ax: plt.Axes, discriminator, device=torch.device('cpu
     decision = discriminator(_data)
     if type(decision) == tuple:
         decision = decision[0]
-    
+
     ax.plot(
         _data.cpu().numpy(),
         decision.detach().cpu().numpy(),

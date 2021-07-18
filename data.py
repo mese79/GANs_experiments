@@ -1,9 +1,8 @@
 import random
 import numpy as np
-import scipy.stats as ss
 import torch
 from torch.tensor import Tensor
-from typing import List, Tuple
+from typing import List
 
 np.random.seed(13)
 torch.random.manual_seed(13)
@@ -23,17 +22,15 @@ def sample_noise(num: int,
 
 
 def sample_1d_data(num: int,
-                   dim: int, 
+                   dim: int,
                    device: torch.device,
                    mu: float = 2.0,
                    std: float = 0.75) -> Tensor:
-    
-    return torch.tensor(
-        np.random.normal(mu, std, size=(num, dim)),
-        dtype=torch.float,
-        requires_grad=False,
-        device=device
-    )
+
+    return torch.tensor(np.random.normal(mu, std, size=(num, dim)),
+                        dtype=torch.float,
+                        requires_grad=False,
+                        device=device)
 
 
 def sample_8_gaussians(num: int, device: torch.device) -> Tensor:
